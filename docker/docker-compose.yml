@@ -1,12 +1,14 @@
 ## Docker Compose for local developement
 ## Deploys FastAPI and Postgres DB
 
+name: williams-eng-acc
 services:
   postgres:
     image: postgres:15
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
+      - ENVIRONMENT=${ENVIRONMENT:-docker}
       - POSTGRES_USER=${POSTGRES_USER:-postgres}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
       - POSTGRES_DB=${POSTGRES_DB:-williams}
@@ -17,15 +19,16 @@ services:
   api:
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: api/docker/Dockerfile
       target: development
+    env_file:
+      - .env
+    volumes:
+      - ../api:/app/api
     ports:
       - "8000:8000"
     depends_on:
-      - db
-    environment:
-      - PYTHONPATH=/app
-      - DEBUG=true
+      - postgres
     command: ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   etl:
@@ -33,16 +36,12 @@ services:
       context: ..
       dockerfile: etl/docker/Dockerfile
     depends_on:
-      - db
-    environment:
-      - POSTGRES_HOST=db
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
-      - POSTGRES_DB=${POSTGRES_DB:-williams}
-      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
+      - postgres
+    env_file:
+      - .env
     volumes:
-      - ./data:/app/data
+      - ../data:/app/data
     command: ["python", "duckdb_pipeline.py"]
 
 volumes:
-  postgres_data
+  postgres_data:

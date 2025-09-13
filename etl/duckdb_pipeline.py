@@ -1,13 +1,12 @@
 import duckdb
 import sqlite3
 import os
-import psycopg2
 from pathlib import Path
 
 ENVIRONMENT = os.getenv("ENVIRONMENT", "local")
 
 RAW_DATA_DIR = "../data/raw"
-FINAL_DB = "../data/final/f1.db"
+SQLITE_DB = "../data/final/f1.db"
 QUERIES_FILE = "queries.sql"
 
 PG_CONN_INFO = {
@@ -60,7 +59,7 @@ def export_to_sqlite(con):
     circuits_columns = [desc[0] for desc in con.description]
     
     # Create SQLite database and tables
-    sqlite_conn = sqlite3.connect(FINAL_DB)
+    sqlite_conn = sqlite3.connect(SQLITE_DB)
     cursor = sqlite_conn.cursor()
     
     # Create drivers_summary table
@@ -91,28 +90,54 @@ def export_to_sqlite(con):
     sqlite_conn.commit()
     sqlite_conn.close()
     
-    print(f"Summary tables exported to {FINAL_DB}")
+    print(f"Summary tables exported to {SQLITE_DB}")
 
 
 '''
-Export to Postgres
+Use DuckDB's PostgreSQL extension to export to Postgres
 '''
 def export_to_postgres(con):
-    # Connect to PostgreSQL
-    pg_conn = psycopg2.connect(**PG_CONN_INFO)
-    pg_cur = pg_conn.cursor()
+    con.execute("INSTALL postgres; LOAD postgres;")
 
-    # Export summary tables to PostgreSQL
+    # Postgres connection info
+    PG_CONN_INFO = {
+        "host": os.getenv("POSTGRES_HOST", "postgres"),
+        "dbname": os.getenv("POSTGRES_DB", "williams"),
+        "user": os.getenv("POSTGRES_USER", "postgres"),
+        "password": os.getenv("POSTGRES_PASSWORD", "postgres"),
+        "port": os.getenv("POSTGRES_PORT", "5432"),
+    }
+
+    # Create DuckDBsecret
+    con.execute(
+        f"""
+            CREATE OR REPLACE SECRET pg (
+                TYPE postgres,
+                PORT 5432,
+                HOST '{PG_CONN_INFO['host']}',
+                DATABASE '{PG_CONN_INFO['dbname']}',
+                USER '{PG_CONN_INFO['user']}',
+                PASSWORD '{PG_CONN_INFO['password']}'
+            );
+        """
+    )
+
+    # Attach the Postgres database as a writable schema
+    con.execute(
+        f"ATTACH '' AS pg (TYPE POSTGRES, SECRET 'pg');"
+    )
+
+    ## TODO: Dynamic tables creation
+    # Create target tables in Postgres from DuckDB tables
     for table in ["drivers_summary", "circuits_summary"]:
-        df = con.execute(f"SELECT * FROM {table}").fetchdf()
-        df.to_csv(f"/tmp/{table}.csv", index=False)
-        with open(f"/tmp/{table}.csv", "r") as f_csv:
-            pg_cur.copy_expert(f"COPY {table} FROM STDIN WITH CSV HEADER", f_csv)
-        pg_conn.commit()
+        con.execute(f"DROP TABLE IF EXISTS pg.public.{table};")
+        con.execute(f"CREATE TABLE pg.public.{table} AS SELECT * FROM {table};")
+        print(f"Exported {table} to PostgreSQL")
 
-    pg_cur.close()
-    pg_conn.close()
-    print("✅ Data ingested into PostgreSQL!")
+    # Optionally detach
+    con.execute("DETACH pg;")
+
+    print("Data ingested into PostgreSQL!")
 
 
 if __name__ == "__main__":

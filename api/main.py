@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from api.routers import drivers, circuits
-from api.database import Base, engine
+from .routers import drivers, circuits
+from .database import Base, engine
 
 app = FastAPI(title="F1 Stats API")
 

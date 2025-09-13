@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class DriverOutput(BaseModel):
-    driverId: str
+    driverId: int
     name: str
     races_entered: int
     podiums: int
