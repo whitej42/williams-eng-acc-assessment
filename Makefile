@@ -1,11 +1,13 @@
 .DEFAULT_GOAL := help
 
 help:
-	@echo "Williams Enginering Acceleration API"
+	@echo "Williams F1 API"
 
-# Run Commands
-run: # Run FastAPI locally
+run_local:
 	uvicorn api.main:app --reload
+
+run_local_alt: # Run on alternative port to Docker
+	uvicorn api.main:app --reload --port 8080
 
 up: # Run docker compose
 	docker compose -f docker/docker-compose.yml up -d
@@ -27,4 +29,4 @@ build_etl: # Build etl docker image
 
 # Data Commands
 run_pipeline: # Run DuckDB ETL Pipeline
-	cd etl && python duckdb_pipeline.py
+	cd etl && python3 duckdb_pipeline.py
