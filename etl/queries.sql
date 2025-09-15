@@ -26,7 +26,8 @@ CREATE OR REPLACE TEMPORARY TABLE fastest_laps AS
 -- Prevents many-to-many relationship
 SELECT
     ra.circuitId,
-    MIN(l.milliseconds) AS fastest_lap
+    MIN(l.milliseconds) AS fastest_lap,
+    ARG_MIN(l.driverId, l.milliseconds) AS fastest_driver
 FROM lap_times l
 JOIN races ra ON ra.raceId = l.raceId
 GROUP BY ra.circuitId;
@@ -38,9 +39,10 @@ SELECT
     c.location,
     c.country,
     COUNT(DISTINCT ra.raceId) AS total_races,
-    f.fastest_lap
+    f.fastest_lap,
+    f.fastest_driver
 FROM circuits c
 JOIN races ra ON ra.circuitId = c.circuitId
 JOIN fastest_laps f ON c.circuitId = f.circuitId
-GROUP BY c.circuitId, circuit_name, c.location, c.country, f.fastest_lap
+GROUP BY c.circuitId, circuit_name, c.location, c.country, f.fastest_lap, f.fastest_driver
 ORDER BY c.circuitId;

@@ -1,0 +1,44 @@
+# Example workflow for building the API Docker image
+# TODO: Conditional builds based on branches for development and production
+
+name: Build API Image
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - api/**
+  pull_request:
+    branches:
+        - main
+    paths-ignore:
+      - api/**
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::XXXXXXXXXXXX:role/ECRPipelineDeployerRole 
+          aws-region: us-east-1
+      
+      - name: Build and push Docker image to ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Login to ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ secrets.API_ECR_REPOSITORY_URI }}
+
+      - name: Build API Docker image
+        run: |
+          make build_api
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push ${{ secrets.API_ECR_REPOSITORY_URI }}

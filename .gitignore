@@ -1,4 +1,10 @@
+# Python
 __pycache__/
 .venv/
-.env
+
+# Environment variables
+#.env - Ignore outside of this demo
+
+# Data Directories
+# data/* - Ignore all data files outside of this demo
 data/final/*

@@ -14,6 +14,12 @@ A FastAPI-based service that provides analytics on racing data, including detail
 
 The API is built with FastAPI and provides RESTful endpoints for accessing racing analytics data.
 
+### Why FastAPI?
+
+- **Lightweight**: Minimal overhead compared to Flask & Django. 
+- **Performance**: FastAPI is fast! Comparable to Node.js and Go.
+- **Async by default**: Perfect for high I/O operations such as API calls and database queries.
+
 ### Endpoints
 
 | Endpoint | Method | Description |
@@ -41,11 +47,11 @@ The application uses a modern ETL architecture designed for performance and main
 
 ### Why DuckDB?
 
-- **Performance**: Optimized for analytical workloads with complex SQL queries
+- **Performance**: Optimised for analytical workloads with complex SQL queries
 - **Simplicity**: In-process analytical database requiring no server setup
 - **Limitation**: Not designed for high-concurrency scenarios (hence the separate API database)
 
-This architecture separates concerns: DuckDB handles heavy analytical processing while the API database (SQLite/PostgreSQL) serves fast, concurrent read queries.
+This architecture separates concerns: DuckDB handles heavy analytical processing while the API database (SQLite/PostgreSQL) serves fast, concurrent read queries utilizing the finalised datasets.
 
 ## Getting Started
 
@@ -58,7 +64,7 @@ Choose your preferred setup method:
 - Docker Compose
 
 **Local Development**:
-- Python 3.8+
+- Python 3.12+
 - pip
 - uvicorn
 
@@ -114,19 +120,35 @@ For development or customization:
 
 The API will be available at http://localhost:8000
 
+## Make Commands
+| Command | Action |
+|-------|------|
+| `make help` | view make commands|
+| `make run_local` | Run FastAPI Locally |
+| `make run_local_alt` | Run FastAPI locally on alternate port |
+| `make up `| Build and run Docker Compose |
+| `make down` | Stop Docker Compose |
+| `make build` | Build Docker Compose |
+| `make build_no_cache` | Build Docker Compose without cache |
+| `make build_api` | Build API Dockerfile |
+| `make build_etl` | Build ETL Dockerfile |
+| `make run_pipeline `| Run ETL pipeline locally |
+| `make restart` | Rerun ETL process inside Docker |
+
 ## Production Deployment
 
 ### Cloud Architecture Recommendations
 
 **Data Processing**:
 - Deploy ETL pipeline as Kubernetes Jobs or AWS Batch jobs.
-- Trigger processing via file uploads to S3, manual trigger for AdHoc or on a schedule.
+- Trigger processing via file uploads to S3, manual trigger for AdHoc runs or on a schedule.
 - Use S3 for raw data storage and versioning. Can be stored as CSV or converted to Parquet for faster processing.
 
 **API Deployment**:
 - Containerized deployment in Kubernetes for auto-scaling.
 - Load balancer for high availability.
 - PostgreSQL RDS for managed database service. Potentially leverage serverless to save costs.
+- Alternative, use Postgres container with persistant storage inside EKS cluster. (Not recommended for critical workloads)
 
 **Benefits**:
 - Horizontal scaling based on demand.
@@ -137,7 +159,7 @@ The API will be available at http://localhost:8000
 - **Terraform** for cloud infrastructure provisioning
 - **Kubernetes manifests** or **Helm charts** for application deployment
 - **CI/CD pipelines** for automated testing and infrastructure deployment
-- **ArgoCD** for automated Kubernetes deploymentß
+- **ArgoCD** for automated Kubernetes deployments
 
 ### Monitoring
 - **Prometheus** for monitoring overall cluster and node health
@@ -151,10 +173,10 @@ The API will be available at http://localhost:8000
 ### Build & Release Strategy
 - Leverage blue-green deployments or canary releases
 - Automated image build pipelines to staging and production environments
-- Builds triggered based on branch e.g. develop to staging (or green), main to production
+- Builds triggered based on branch e.g. develop to staging, main to production etc.
 - Automated testing in pipelines for data and code validation.
 
-### Project Structure
+## Project Structure
 
 ```
 ├── api         # FastAPI Application

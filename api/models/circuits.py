@@ -10,3 +10,4 @@ class Circuit(Base):
     country = Column(String, nullable=True)
     total_races = Column(Integer, default=0)
     fastest_lap = Column(Integer, default=0)
+    fastest_driver = Column(Integer, nullable=True)
