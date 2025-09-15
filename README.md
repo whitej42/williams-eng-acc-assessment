@@ -162,13 +162,18 @@ The API will be available at http://localhost:8000
 - **ArgoCD** for automated Kubernetes deployments
 
 ### Monitoring
-- **Prometheus** for monitoring overall cluster and node health
+- **Prometheus** - Monitoring overall cluster and node health
     - **Kube-state-metrics** - Collect metrics from Kubernetes objects, e.g. deployments, nodes and pods
     - **CAdvisor** - Monitoring resource usage and performance of containers
     - **Node Exporter** - Linux EKS Nodes
 - **Loki** - Aggregating logs from containerised workloads
 - **Alertmanager** - Handling alerts
 - **Grafana** - Data visualation
+
+### Security
+- **Least privilege**: Any users or roles will only be granted the minumum access required to carry out functionality.
+- **Secrets Management**: AWS Secrets Manager (or 3rd Party tools such as Doppler) can store sensitive values used by the application. External secrets operator can securely access these secrets from inside the Kubernetes cluster.
+- **Networking**: API endpoints should only be accessed inside a private network and any public endpoints should to be tightly controlled and monitored.
 
 ### Build & Release Strategy
 - Leverage blue-green deployments or canary releases
