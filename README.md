@@ -1,6 +1,6 @@
 # Racing Data API
 
-A FastAPI-based service that provides analytics on racing data, including detailed summaries for circuits and drivers with performance metrics.
+A FastAPI-based service that provides analytics on racing data, including summaries for circuits and drivers.
 
 ## Features
 
@@ -156,8 +156,8 @@ The API will be available at http://localhost:8000
 - Managed database services for reliability and maintenance.
 
 <details>
-<summary>### Example Architecture Diagram</summary>
-<br>
+<summary><strong>Example Architecture Diagram</strong></summary>
+
 ![Architecture Diagram](./docs/example_architecture.png)
 </details>
 
