@@ -155,8 +155,11 @@ The API will be available at http://localhost:8000
 - Separation of compute resources for ETL and API workloads.
 - Managed database services for reliability and maintenance.
 
-### Example Architecture Diagram
-[Architecture Diagram](./docs/example_architecture.png)
+<details>
+<summary>### Example Architecture Diagram</summary>
+<br>
+![Architecture Diagram](./docs/example_architecture.png)
+</details>
 
 ### Infrastructure as Code
 - **Terraform** for cloud infrastructure provisioning
