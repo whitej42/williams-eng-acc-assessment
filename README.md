@@ -39,7 +39,7 @@ Once running, access the interactive API documentation at:
 
 ### Data Processing Pipeline
 
-The application uses a modern ETL architecture designed for performance and maintainability:
+The application uses an ETL architecture designed for performance, scalability and maintainability:
 
 1. **Extract**: Raw racing data is loaded into DuckDB tables
 2. **Transform**: SQL analytics queries process and aggregate the data
@@ -155,6 +155,9 @@ The API will be available at http://localhost:8000
 - Separation of compute resources for ETL and API workloads.
 - Managed database services for reliability and maintenance.
 
+### Example Architecture Diagram
+[Architecture Diagram](./docs/example_architecture.png)
+
 ### Infrastructure as Code
 - **Terraform** for cloud infrastructure provisioning
 - **Kubernetes manifests** or **Helm charts** for application deployment
@@ -176,8 +179,8 @@ The API will be available at http://localhost:8000
 - **Networking**: API endpoints should only be accessed inside a private network and any public endpoints should to be tightly controlled and monitored.
 
 ### Build & Release Strategy
-- Leverage blue-green deployments or canary releases
-- Automated image build pipelines to staging and production environments
+- Leverage blue-green deployments or canary releases.
+- Automated image build pipelines to staging and production environments.
 - Builds triggered based on branch e.g. develop to staging, main to production etc.
 - Automated testing in pipelines for data and code validation.
 
