@@ -42,10 +42,10 @@ def run_pipeline():
     con.execute(sql_script)
 
     if ENVIRONMENT == "local":
-        # Export tables to Postgres container
+        # Export tables to SQLite (LOCAL ONLY)
         export_to_sqlite(con)
     else:
-        # Export tables to SQLite (default)
+        # Export tables to Postgres
         export_to_postgres(con)
 
 

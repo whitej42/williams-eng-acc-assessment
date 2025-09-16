@@ -22,7 +22,10 @@ def get_drivers(
         db: Session = Depends(get_db)
     ):
     
-    return db.query(Driver).all()
+    try:
+        return db.query(Driver).all()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 '''
 GET /drivers/{driver_id}
@@ -35,8 +38,12 @@ def get_driver(
         db: Session = Depends(get_db)
     ):
 
-    driver = db.query(Driver).filter(Driver.driverId == driver_id).first()
+    try:
+        driver = db.query(Driver).filter(Driver.driverId == driver_id).first()
     
     if not driver:
         raise HTTPException(status_code=404, detail="Driver not found")
     return driver
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

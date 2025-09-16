@@ -1,14 +1,14 @@
-from fastapi import FastAPI
-from .routers import drivers, circuits
+from fastapi import FastAPI, Depends
 from .database import Base, engine
+from .routers import health, drivers, circuits
+from prometheus_fastapi_instrumentator import Instrumentator
 
 app = FastAPI(title="F1 Stats API")
 
 # Register routers
+app.include_router(health.router, prefix="/health", tags=["Health"])
 app.include_router(drivers.router, prefix="/drivers", tags=["Drivers"])
 app.include_router(circuits.router, prefix="/circuits", tags=["Circuits"])
 
-# Create tables on startup
-@app.on_event("startup")
-def on_startup() -> None:
-    Base.metadata.create_all(bind=engine)
+# Instrument the app for Prometheus
+Instrumentator().instrument(app).expose(app)

@@ -28,6 +28,9 @@ help:	## Show this help.
 	@echo "╔═══════════════════════════════════════════╗"
 	@echo "║             Williams Race API             ║"
 	@echo "╚═══════════════════════════════════════════╝"
+	@echo "${GREEN}"
+	@echo "These commands run faster than a pit stop! 🏎️ "
+	@echo "${NC}"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf " $(YELLOW)%-15s $(NC)%s\n", $$1, $$2}'
 
 # Local run commands

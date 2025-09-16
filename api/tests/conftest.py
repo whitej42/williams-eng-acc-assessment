@@ -31,7 +31,7 @@ def override_get_db():
     finally:
         db.close()
 
-
+# Override get_db to use the test database
 app.dependency_overrides[get_db] = override_get_db
 
 '''
@@ -39,6 +39,7 @@ Setup test database and seed test data
 '''
 @pytest.fixture(scope="session", autouse=True)
 def setup_test_database():
+    # Bootstrap database
     Base.metadata.create_all(bind=engine)
 
     # Seed test data

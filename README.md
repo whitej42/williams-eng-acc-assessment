@@ -194,6 +194,7 @@ The API will be available at http://localhost:8000
 - **Least privilege**: Any users or roles will only be granted the minumum access required to carry out functionality.
 - **Secrets Management**: AWS Secrets Manager (or 3rd Party tools such as Doppler) can store sensitive values used by the application. External secrets operator can securely access these secrets from inside the Kubernetes cluster.
 - **Networking**: API endpoints should only be accessed inside a private network and any public endpoints should to be tightly controlled and monitored.
+- **Image Scanning**: Scanning of Docker images during build process in the pipeline or inside container registry to check for vulnerabilities.
 
 ### Build & Release Strategy
 - Leverage blue-green deployments or canary releases.
