@@ -39,11 +39,9 @@ def get_circuit(
     ):
 
     try:
-    circuit = db.query(Circuit).filter(Circuit.circuitId == circuit_id).first()
-    
-    if not circuit:
-        raise HTTPException(status_code=404, detail="Circuit not found")
-    return circuit
-    
+        circuit = db.query(Circuit).filter(Circuit.circuitId == circuit_id).first()
+        if not circuit:
+            raise HTTPException(status_code=404, detail="Circuit not found")
+        return circuit
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

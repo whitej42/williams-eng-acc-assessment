@@ -40,10 +40,8 @@ def get_driver(
 
     try:
         driver = db.query(Driver).filter(Driver.driverId == driver_id).first()
-    
-    if not driver:
-        raise HTTPException(status_code=404, detail="Driver not found")
-    return driver
-
+        if not driver:
+            raise HTTPException(status_code=404, detail="Driver not found")
+        return driver
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

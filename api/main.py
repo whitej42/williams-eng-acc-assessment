@@ -12,3 +12,7 @@ app.include_router(circuits.router, prefix="/circuits", tags=["Circuits"])
 
 # Instrument the app for Prometheus
 Instrumentator().instrument(app).expose(app)
+
+@app.get("/")
+def root():
+    return {"message": "Welcome to the F1 Stats API"}
