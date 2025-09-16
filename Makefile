@@ -50,6 +50,9 @@ down: ## Stop docker compose
 	docker compose -f docker/docker-compose.yml down
 	@echo "$(GREEN)Services stopped!$(NC)"
 
+show: ## Show docker compose services
+	docker compose -f docker/docker-compose.yml ps
+
 build: ## Build docker compose
 	docker compose -f docker/docker-compose.yml build
 	@echo "$(GREEN)Docker compose built$(NC)"
