@@ -62,6 +62,7 @@ Choose your preferred setup method:
 **Docker (Recommended)**:
 - Docker Desktop
 - Docker Compose
+- Make
 
 **Local Development**:
 - Python 3.12+

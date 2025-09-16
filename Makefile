@@ -12,10 +12,10 @@ help:	## Show this help.
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf " $(YELLOW)%-15s $(NC)%s\n", $$1, $$2}'
 
 # Local run commands
-run_local:  ## Run FastAPI Locally
+run_local:  ## Run FastAPI (LOCAL ONLY)
 	uvicorn api.main:app --reload
 
-run_local_alt: # Run on alternative port to Docker
+run_local_alt: # Run on alternative port to Docker (LOCAL ONLY)
 	uvicorn api.main:app --reload --port 8080
 
 # Data Commands
@@ -49,6 +49,13 @@ build_etl: ## Build etl docker image
 
 restart_etl: ## Rerun ETL process inside Docker
 	docker compose -f docker/docker-compose.yml restart etl
+
+# Test commands
+tests: ## Run tests
+	pytest api/tests
+
+tests_docker: ## Run tests inside Docker
+	docker compose -f docker/docker-compose.yml run api pytest tests
 
 # Logs
 logs: ## View docker compose logs

@@ -19,7 +19,8 @@ FROM base AS development
 
 # Copy requirements and install
 COPY api/requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir psycopg2==2.9.10
 
 # Copy application code into /app/api so the 'api' package exists
 COPY api/ /app/api

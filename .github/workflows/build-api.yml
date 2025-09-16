@@ -27,7 +27,11 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::XXXXXXXXXXXX:role/ECRPipelineDeployerRole 
           aws-region: us-east-1
-      
+
+      - name: Run tests
+        run: |
+          pytest api/tests
+
       - name: Build and push Docker image to ECR
         uses: aws-actions/amazon-ecr-login@v1
 
