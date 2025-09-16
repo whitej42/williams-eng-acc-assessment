@@ -31,7 +31,7 @@ Returns a driver by their ID
 '''
 @router.get("/{driver_id}", response_model=DriverOutput)
 def get_driver(
-        driver_id: str, 
+        driver_id: int, 
         db: Session = Depends(get_db)
     ):
 

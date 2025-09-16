@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from ..schemas.circuit import CircuitOutput
 from ..database import get_db
-from ..models.circuits import Circuit
+from ..models.circuit import Circuit
 
 router = APIRouter()
 
