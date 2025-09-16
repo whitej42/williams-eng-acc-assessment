@@ -60,7 +60,9 @@ This architecture separates concerns: DuckDB handles heavy analytical processing
 Choose your preferred setup method:
 
 **Docker (Recommended)**:
-- [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/)
+- Docker Desktop
+   - [Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
+   - [MacOS](https://docs.docker.com/desktop/setup/install/mac-install/)
 - Docker Compose *(Installed with Docker Desktop)*
 - Make *(Recommended)*
    - [Windows](https://community.chocolatey.org/packages/make)
@@ -134,16 +136,18 @@ The API will be available at http://localhost:8000
 | Command | Action |
 |-------|------|
 | `make help` | view make commands|
-| `make run_local` | Run FastAPI Locally |
+| `make run_local` | Run FastAPI locally |
 | `make run_local_alt` | Run FastAPI locally on alternate port |
 | `make up `| Build and run Docker Compose |
 | `make down` | Stop Docker Compose |
 | `make build` | Build Docker Compose |
 | `make build_no_cache` | Build Docker Compose without cache |
-| `make build_api` | Build API Dockerfile |
-| `make build_etl` | Build ETL Dockerfile |
+| `make build_api` | Build API Docker image |
+| `make build_etl` | Build ETL Docker image |
 | `make run_pipeline `| Run ETL pipeline locally |
 | `make restart` | Rerun ETL process inside Docker |
+| `make tests` | Run Pytests |
+| `make tests_docker` | Run Pytests inside Docker |
 
 ## Production Deployment
 
@@ -198,25 +202,26 @@ The API will be available at http://localhost:8000
 - Automated testing in pipelines for data and code validation.
 
 ## Project Structure
-
 ```
-├── api         # FastAPI Application
+├── api           # FastAPI Application
 │   ├── __init__.py
 │   ├── __pycache__
 │   ├── database.py
 │   ├── docker
 │   ├── main.py
-│   ├── main.py.bck
 │   ├── models
 │   ├── requirements.txt
 │   ├── routers
-│   └── schemas
-├── data        # Local data storage
+│   ├── schemas
+│   ├── test.db
+│   └── tests
+├── data          # Local data storage
 │   ├── final
 │   └── raw
-├── docker      # Docker configuration
+├── docker        # Docker configuration
 │   └── docker-compose.yml
-├── etl         # Data processing pipeline
+├── docs
+├── etl           # Data processing pipeline
 │   ├── __init__.py
 │   ├── docker
 │   ├── duckdb_pipeline.py
