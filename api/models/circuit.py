@@ -1,5 +1,13 @@
+'''
+Cricuit Model
+
+Defines the ORM model for circuits, summarising
+statistics such as total races, fastest laps and fastest driver.
+'''
+
 from sqlalchemy import Column, Integer, String
 from ..database import Base
+
 
 class Circuit(Base):
     __tablename__ = "circuits_summary"

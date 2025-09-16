@@ -1,3 +1,9 @@
+'''
+Driver Base Model
+
+Defines base schema for the driver model
+'''
+
 from pydantic import BaseModel
 
 class DriverOutput(BaseModel):

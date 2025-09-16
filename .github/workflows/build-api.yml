@@ -1,4 +1,4 @@
-# Example workflow for building the API Docker image
+# Example workflow for building the API Docker image & pushing to ECR
 # TODO: Conditional builds based on branches for development and production
 
 name: Build API Image
@@ -7,12 +7,12 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
+    paths:
       - api/**
   pull_request:
     branches:
         - main
-    paths-ignore:
+    paths:
       - api/**
 
 jobs:
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build API Docker image
         run: |
-          make build_api
+          docker build -f api/docker/Dockerfile --target production -t williams-eng-acc-api .
 
       - name: Push Docker image to ECR
         run: |

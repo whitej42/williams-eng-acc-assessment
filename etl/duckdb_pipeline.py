@@ -24,10 +24,11 @@ def run_pipeline():
     con = duckdb.connect(database=":memory:")
 
     # Load raw data into DuckDB tables
+    # Loop through data directory and load each file into a table
     for filename in os.listdir(RAW_DATA_DIR):
         table_name = os.path.splitext(filename)[0]
         file_path = f"{RAW_DATA_DIR}/{filename}"
-
+    
         con.execute(f"""
             CREATE OR REPLACE TABLE {table_name} AS
             SELECT * FROM read_csv_auto('{file_path}', header=True);

@@ -1,3 +1,9 @@
+'''
+Drivers Router
+
+Defines API endpoints for interacting with the Drivers model
+'''
+
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
 from ..schemas.driver import DriverOutput
@@ -6,7 +12,11 @@ from ..models.driver import Driver
 
 router = APIRouter()
 
+'''
+GET /drivers/
 
+Returns all drivers
+'''
 @router.get("/", response_model=list[DriverOutput])
 def get_drivers(
         db: Session = Depends(get_db)
@@ -14,6 +24,11 @@ def get_drivers(
     
     return db.query(Driver).all()
 
+'''
+GET /drivers/{driver_id}
+
+Returns a driver by their ID
+'''
 @router.get("/{driver_id}", response_model=DriverOutput)
 def get_driver(
         driver_id: str, 

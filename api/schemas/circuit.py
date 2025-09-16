@@ -1,3 +1,9 @@
+'''
+Circuit Base Model
+
+Defines base schema for the circuit model
+'''
+
 from pydantic import BaseModel
 
 class CircuitOutput(BaseModel):

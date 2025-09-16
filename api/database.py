@@ -1,5 +1,11 @@
+'''
+Database configuration for the API
+
+- Local development uses SQLite
+- Production uses Postgres DB
+'''
+
 import os
-import psycopg2
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
 

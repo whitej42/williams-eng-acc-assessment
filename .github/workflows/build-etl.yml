@@ -1,4 +1,4 @@
-# Example workflow for building the ETL Docker image
+# Example workflow for building the ETL Docker image & pushing to ECR
 # TODO: Conditional builds based on branches for development and production
 
 name: Build ETL Image
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build API Docker image
         run: |
-          make build_etl
+          docker build -f etl/docker/Dockerfile -t williams-eng-acc-etl .
 
       - name: Push Docker image to ECR
         run: |

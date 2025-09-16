@@ -1,5 +1,13 @@
+'''
+Driver Model
+
+Defines the ORM model for drivers, summarising their
+statistics such as races entered, podiums, and wins.
+'''
+
 from sqlalchemy import Column, Integer, String
 from ..database import Base
+
 
 class Driver(Base):
     __tablename__ = "drivers_summary"
