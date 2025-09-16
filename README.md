@@ -60,9 +60,11 @@ This architecture separates concerns: DuckDB handles heavy analytical processing
 Choose your preferred setup method:
 
 **Docker (Recommended)**:
-- Docker Desktop
-- Docker Compose
-- Make
+- [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/)
+- Docker Compose *(Installed with Docker Desktop)*
+- Make *(Recommended)*
+   - [Windows](https://community.chocolatey.org/packages/make)
+   - [MacOS](https://formulae.brew.sh/formula/make)
 
 **Local Development**:
 - Python 3.12+
@@ -73,9 +75,16 @@ Choose your preferred setup method:
 
 The fastest way to get started is using Docker Compose:
 
+- ***Via Make***
 ```bash
 # Build and start all services
 make up
+```
+
+- ***Via Docker Compose***
+```bash
+# Run Docker Compose natively
+docker compose -f docker/docker-compose.yml up -d
 ```
 
 This command will:
