@@ -180,10 +180,11 @@ The API will be available at http://localhost:8000
 - **ArgoCD** for automated Kubernetes deployments
 
 ### Monitoring
-- **Prometheus** - Monitoring overall cluster and node health
-    - **Kube-state-metrics** - Collect metrics from Kubernetes objects, e.g. deployments, nodes and pods
-    - **CAdvisor** - Monitoring resource usage and performance of containers
-    - **Node Exporter** - Linux EKS Nodes
+- **Prometheus** - Metrics collection and monitoring toolkit
+   - **FastAPI Instrumentator** - Collect request metrics from FastAPI.
+   - **Kube-state-metrics** - Collect metrics from Kubernetes objects, e.g. deployments, nodes and pods
+   - **CAdvisor** - Metrics for containers resource usage and performance
+   - **Node Exporter** - Linux EKS Nodes
 - **Loki** - Aggregating logs from containerized workloads
 - **Alertmanager** - Handling alerts
 - **Grafana** - Data visualation
@@ -213,7 +214,6 @@ The API will be available at http://localhost:8000
 │   ├── requirements.txt
 │   ├── routers
 │   ├── schemas
-│   ├── test.db
 │   └── tests
 ├── data          # Local data storage
 │   ├── final
