@@ -26,8 +26,11 @@ The API is built with FastAPI and provides RESTful endpoints for accessing racin
 |----------|--------|-------------|
 | `/drivers` | GET | List all driver summaries |
 | `/drivers/{driver_id}` | GET | Get specific driver details by ID |
-| `/circuits` | GET | List all circuit summaries |
+| `/circuits/` | GET | List all circuit summaries |
 | `/circuits/{circuit_id}` | GET | Get specific circuit details by ID |
+| ` /health` | GET | API health check |
+| `/health/db` | GET | DB health check |
+| `/metrics` | GET | Exposed Prometheus metrics |
 
 ### API Documentation
 
@@ -35,9 +38,7 @@ Once running, access the interactive API documentation at:
 - **Swagger UI**: `http://localhost:8000/docs`
 - **ReDoc**: `http://localhost:8000/redoc`
 
-## Architecture
-
-### Data Processing Pipeline
+## Data Processing Pipeline
 
 The application uses an ETL architecture designed for performance, scalability and maintainability:
 
@@ -49,7 +50,7 @@ The application uses an ETL architecture designed for performance, scalability a
 
 - **Performance**: Optimised for analytical workloads with complex SQL queries
 - **Simplicity**: In-process analytical database requiring no server setup
-- **Limitation**: Not designed for high-concurrency scenarios (hence the separate API database)
+- **Limitation**: Not designed for high-concurrency (hence the separate API database)
 
 This architecture separates concerns: DuckDB handles heavy analytical processing while the API database (SQLite/PostgreSQL) serves fast, concurrent read queries utilizing the finalised datasets.
 
@@ -101,9 +102,6 @@ This command will:
 - Documentation: http://localhost:8000/docs
 
 ### Local Development
-
-For development or customization:
-
 1. **Set up Python environment**:
    ```bash
    python -m venv venv
@@ -186,15 +184,16 @@ The API will be available at http://localhost:8000
     - **Kube-state-metrics** - Collect metrics from Kubernetes objects, e.g. deployments, nodes and pods
     - **CAdvisor** - Monitoring resource usage and performance of containers
     - **Node Exporter** - Linux EKS Nodes
-- **Loki** - Aggregating logs from containerised workloads
+- **Loki** - Aggregating logs from containerized workloads
 - **Alertmanager** - Handling alerts
 - **Grafana** - Data visualation
 
 ### Security
-- **Least privilege**: Any users or roles will only be granted the minumum access required to carry out functionality.
+- **Least Privilege**: Any users or roles will only be granted the minumum access required to carry out functionality.
 - **Secrets Management**: AWS Secrets Manager (or 3rd Party tools such as Doppler) can store sensitive values used by the application. External secrets operator can securely access these secrets from inside the Kubernetes cluster.
-- **Networking**: API endpoints should only be accessed inside a private network and any public endpoints should to be tightly controlled and monitored.
+- **Networking**: API endpoints should only be accessed within a private network and any public endpoints should to be tightly controlled and monitored.
 - **Image Scanning**: Scanning of Docker images during build process in the pipeline or inside container registry to check for vulnerabilities.
+- **API Keys or Tokens**: These can be used to further to protect the API ensuring requests are authorized access to specific endpoints. Tokens require another layer such as OIDC to manage short-lived access.
 
 ### Build & Release Strategy
 - Leverage blue-green deployments or canary releases.

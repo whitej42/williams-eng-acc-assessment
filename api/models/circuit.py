@@ -6,6 +6,7 @@ statistics such as total races, fastest laps and fastest driver.
 '''
 
 from sqlalchemy import Column, Integer, String
+
 from ..database import Base
 
 

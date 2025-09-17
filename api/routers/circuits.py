@@ -6,6 +6,9 @@ Defines API endpoints for interacting with the Circuits model.
 
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
+
+
 from ..schemas.circuit import CircuitOutput
 from ..database import get_db
 from ..models.circuit import Circuit
@@ -24,8 +27,8 @@ def list_circuits(
 
     try:
         return db.query(Circuit).all()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Database error")
 
 '''
 GET /circuits/{circuit_id}
@@ -40,8 +43,9 @@ def get_circuit(
 
     try:
         circuit = db.query(Circuit).filter(Circuit.circuitId == circuit_id).first()
-        if not circuit:
-            raise HTTPException(status_code=404, detail="Circuit not found")
-        return circuit
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Database error")
+   
+    if not circuit:
+        raise HTTPException(status_code=404, detail="Circuit not found")
+    return circuit

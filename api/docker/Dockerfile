@@ -1,4 +1,4 @@
-FROM python:3.12-slim AS base
+FROM python:3.12-slim AS BASE
 
 # Install system dependencies
 RUN apt-get update \
@@ -15,14 +15,14 @@ WORKDIR /app/api
 ENV PYTHONPATH=/app
 
 ## Development Stage ##
-FROM base AS development
+FROM base AS DEVELOPMENT
 
 # Copy requirements and install
 COPY api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt && \
     pip install --no-cache-dir psycopg2==2.9.10
 
-# Copy application code into /app/api so the 'api' package exists
+# Copy application code into /api
 COPY api/ /app/api
 RUN chown -R appuser:appuser /app
 
@@ -35,13 +35,14 @@ EXPOSE 8000
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
 ## Production Stage ##
-FROM base AS production
+FROM base AS PRODUCTION
 
 # Copy requirements and install
 COPY api/requirements.txt ./requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir psycopg2==2.9.10
 
-# Copy application code into /app/api so the 'api' package exists
+# Copy application code into /app/api
 COPY api/ /app/api
 RUN chown -R appuser:appuser /app
 

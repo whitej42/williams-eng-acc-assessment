@@ -3,9 +3,10 @@ Drivers Router
 
 Defines API endpoints for interacting with the Drivers model
 '''
-
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
+
 from ..schemas.driver import DriverOutput
 from ..database import get_db
 from ..models.driver import Driver
@@ -24,8 +25,8 @@ def get_drivers(
     
     try:
         return db.query(Driver).all()
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Database error")
 
 '''
 GET /drivers/{driver_id}
@@ -40,8 +41,9 @@ def get_driver(
 
     try:
         driver = db.query(Driver).filter(Driver.driverId == driver_id).first()
-        if not driver:
-            raise HTTPException(status_code=404, detail="Driver not found")
-        return driver
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    except SQLAlchemyError as e:
+        raise HTTPException(status_code=500, detail="Database error")
+
+    if not driver:
+        raise HTTPException(status_code=404, detail="Driver not found")
+    return driver

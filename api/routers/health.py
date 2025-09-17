@@ -7,6 +7,8 @@ Defines API endpoints for interacting with health checks.
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
+
 from ..database import get_db
 
 router = APIRouter()
@@ -36,5 +38,6 @@ def get_db_health(db: Session = Depends(get_db)):
     try:
         db.execute(text("SELECT 1"))
         return {"status": "OK"}
-    except Exception as e:
+    except SQLAlchemyError as e:
+        # Return full error message in health check
         raise HTTPException(status_code=500, detail=str(e))

@@ -6,6 +6,7 @@ statistics such as races entered, podiums, and wins.
 '''
 
 from sqlalchemy import Column, Integer, String
+
 from ..database import Base
 
 
